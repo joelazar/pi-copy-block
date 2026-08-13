@@ -29,7 +29,8 @@
   "pi": {
     "extensions": [
       "./index.ts"
-    ]
+    ],
+    "image": "https://raw.githubusercontent.com/joelazar/pi-copy-block/main/assets/demo.gif"
   },
   "files": [
     "index.ts",
