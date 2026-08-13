@@ -1,0 +1,51 @@
+{
+  "name": "pi-copy-block",
+  "version": "0.1.0",
+  "description": "Copy a code block or shell command out of the last pi reply to the clipboard",
+  "type": "module",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "pi-coding-agent",
+    "extension",
+    "clipboard",
+    "copy",
+    "code-block",
+    "shell"
+  ],
+  "author": "Jozsef Gabor Lazar <me@joelazar.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joelazar/pi-copy-block.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joelazar/pi-copy-block/issues"
+  },
+  "homepage": "https://github.com/joelazar/pi-copy-block#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "files": [
+    "index.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm pack --dry-run"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "typescript": "^5.9.2"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*"
+  }
+}
