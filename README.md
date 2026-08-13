@@ -9,7 +9,7 @@ Pi ends a lot of turns with something you're meant to run or paste: a fenced blo
 ## Install
 
 ```bash
-pi install npm:pi-copy-block
+pi install npm:@joelazar/pi-copy-block
 ```
 
 ## Usage
