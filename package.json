@@ -1,6 +1,6 @@
 {
   "name": "@joelazar/pi-copy-block",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Copy a code block or shell command out of the last pi reply to the clipboard",
   "type": "module",
   "keywords": [

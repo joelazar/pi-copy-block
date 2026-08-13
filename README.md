@@ -2,7 +2,7 @@
 
 Grab a code block out of pi's last reply and put it on your clipboard.
 
-![demo](./assets/demo.gif)
+![demo](https://raw.githubusercontent.com/joelazar/pi-copy-block/main/assets/demo.gif)
 
 Pi ends a lot of turns with something you're meant to run or paste: a fenced block in its prose, or a `bash` tool call waiting for approval. Selecting that text with the mouse inside a TUI is fiddly, and it picks up the surrounding borders. `/copy-block` pulls it out cleanly.
 
