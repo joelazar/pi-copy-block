@@ -19,7 +19,7 @@ Run `/copy-block`. The extension scans the last ten assistant replies and gather
 - the body of every fenced code block in the message text, with the fences and language tag stripped
 - the `command` argument of every `bash` tool call
 
-One match goes straight to the clipboard. If several replies have blocks, a picker chooses the reply (`Reply 1` is the latest). If that reply has several blocks, a second picker chooses the block. Each choice shows the first line, truncated to 80 characters.
+One match goes straight to the clipboard. Several open a picker: the list on the left shows each block's first line tagged with its reply (`R1` is the latest reply), the pane on the right shows the highlighted block. `←`/`→` scroll a long block. Navigation follows your `tui.select.*` keybindings.
 
 If none of the replies has a block, you get a warning and the clipboard is left alone.
 

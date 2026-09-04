@@ -3,7 +3,7 @@ import test from "node:test";
 
 import type { SessionEntry } from "@earendil-works/pi-coding-agent";
 
-import { extractFencedBlocks, findRecentCopyableReplies } from "../index.ts";
+import { extractFencedBlocks, findRecentBlocks } from "../index.ts";
 
 function assistant(...content: unknown[]): SessionEntry {
   return {
@@ -29,11 +29,11 @@ test("searches the ten most recent assistant replies, newest first", () => {
     user(`prompt-${i}`),
   ]).flat();
 
-  const replies = findRecentCopyableReplies(branch);
+  const blocks = findRecentBlocks(branch);
 
-  assert.equal(replies.length, 10);
-  assert.deepEqual(replies[0], { age: 1, blocks: ["command-10"] });
-  assert.deepEqual(replies[9], { age: 10, blocks: ["command-1"] });
+  assert.equal(blocks.length, 10);
+  assert.deepEqual(blocks[0], { age: 1, lang: "bash", code: "command-10" });
+  assert.deepEqual(blocks[9], { age: 10, lang: "bash", code: "command-1" });
 });
 
 test("counts age by assistant reply, not by entry", () => {
@@ -46,34 +46,38 @@ test("counts age by assistant reply, not by entry", () => {
     assistant(fenced("new")),
   ];
 
-  assert.deepEqual(findRecentCopyableReplies(branch), [
-    { age: 1, blocks: ["new"] },
-    { age: 3, blocks: ["old"] },
+  assert.deepEqual(findRecentBlocks(branch), [
+    { age: 1, lang: "bash", code: "new" },
+    { age: 3, lang: "bash", code: "old" },
   ]);
 });
 
 test("collects fenced blocks and bash tool calls in order", () => {
   const branch = [
     assistant(
-      { type: "text", text: "```sh\necho from prose\n```" },
+      { type: "text", text: "```sh\necho from prose\n```\n\n```\nno lang\n```" },
       { type: "toolCall", name: "bash", arguments: { command: "printf from-tool" } },
       { type: "toolCall", name: "read", arguments: { path: "x" } },
     ),
   ];
 
-  assert.deepEqual(findRecentCopyableReplies(branch), [
-    { age: 1, blocks: ["echo from prose", "printf from-tool"] },
+  assert.deepEqual(findRecentBlocks(branch), [
+    { age: 1, lang: "sh", code: "echo from prose" },
+    { age: 1, lang: "", code: "no lang" },
+    { age: 1, lang: "bash", code: "printf from-tool" },
   ]);
 });
 
 test("preserves newlines inside a fenced script", () => {
   const script = "for file in *.txt; do\n  printf '%s\\n' \"$file\"\ndone";
 
-  assert.deepEqual(extractFencedBlocks(`\`\`\`bash\n${script}\n\`\`\`\n`), [script]);
+  assert.deepEqual(extractFencedBlocks(`\`\`\`bash\n${script}\n\`\`\`\n`), [
+    { lang: "bash", code: script },
+  ]);
 });
 
 test("returns nothing when no reply has a block", () => {
   const branch = [assistant({ type: "text", text: "There is no command in this reply." })];
 
-  assert.deepEqual(findRecentCopyableReplies(branch), []);
+  assert.deepEqual(findRecentBlocks(branch), []);
 });
