@@ -34,11 +34,14 @@ Sleep 4s
 Type "/copy-block"
 Sleep 800ms
 Enter
-Sleep 2500ms
+Sleep 2s
 
-Sleep 800ms
+Down
+Sleep 1500ms
+Down
+Sleep 1500ms
 Enter
-Sleep 2500ms
+Sleep 2s
 
 Paste
 Sleep 2500ms

@@ -27,6 +27,14 @@ git commit -qm "initial"
 python3 - "$DEMO/sessions/demo.jsonl" <<'PY'
 import json, sys, uuid
 
+earlier = """Install dependencies and run the suite with coverage:
+
+```bash
+npm ci && npm test -- --coverage
+```
+
+The report lands in `coverage/lcov-report/index.html`."""
+
 reply = """Here is the deploy sequence. Build the image first:
 
 ```bash
@@ -49,27 +57,26 @@ Once the rollout settles, tail the logs to confirm the new pods are healthy."""
 sid = str(uuid.uuid7()) if hasattr(uuid, "uuid7") else str(uuid.uuid4())
 ts = "2026-08-13T09:00:00.000Z"
 
-lines = [
-    {"type": "session", "version": 3, "id": sid, "timestamp": ts, "cwd": "/tmp/pi-copy-block-demo"},
-    {
+
+def user(id, parent, text, at):
+    return {
         "type": "message",
-        "id": "aaaaaaaa",
-        "parentId": None,
+        "id": id,
+        "parentId": parent,
         "timestamp": ts,
-        "message": {
-            "role": "user",
-            "content": [{"type": "text", "text": "How do I deploy the api service?"}],
-            "timestamp": 1786000000000,
-        },
-    },
-    {
+        "message": {"role": "user", "content": [{"type": "text", "text": text}], "timestamp": at},
+    }
+
+
+def assistant(id, parent, text, at):
+    return {
         "type": "message",
-        "id": "bbbbbbbb",
-        "parentId": "aaaaaaaa",
+        "id": id,
+        "parentId": parent,
         "timestamp": ts,
         "message": {
             "role": "assistant",
-            "content": [{"type": "text", "text": reply}],
+            "content": [{"type": "text", "text": text}],
             "api": "anthropic-messages",
             "provider": "anthropic",
             "model": "claude-sonnet-4-5",
@@ -82,10 +89,18 @@ lines = [
                 "cost": {"input": 0.0, "output": 0.003, "cacheRead": 0.002, "cacheWrite": 0.007, "total": 0.012},
             },
             "stopReason": "stop",
-            "responseId": "msg_demo",
-            "timestamp": 1786000001000,
+            "responseId": f"msg_{id}",
+            "timestamp": at,
         },
-    },
+    }
+
+
+lines = [
+    {"type": "session", "version": 3, "id": sid, "timestamp": ts, "cwd": "/tmp/pi-copy-block-demo"},
+    user("aaaaaaaa", None, "How do I run the test suite locally?", 1786000000000),
+    assistant("bbbbbbbb", "aaaaaaaa", earlier, 1786000001000),
+    user("cccccccc", "bbbbbbbb", "How do I deploy the api service?", 1786000002000),
+    assistant("dddddddd", "cccccccc", reply, 1786000003000),
 ]
 
 with open(sys.argv[1], "w") as fh:
