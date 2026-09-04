@@ -1,6 +1,6 @@
 # pi-copy-block
 
-Grab a code block out of pi's last reply and put it on your clipboard.
+Grab a code block out of pi's recent replies and put it on your clipboard.
 
 ![demo](https://raw.githubusercontent.com/joelazar/pi-copy-block/main/assets/demo.gif)
 
@@ -14,14 +14,14 @@ pi install npm:@joelazar/pi-copy-block
 
 ## Usage
 
-Run `/copy-block`. The extension scans the ten most recent assistant replies, newest first, and gathers, in the order they appear:
+Run `/copy-block`. The extension scans the last ten assistant replies and gathers from each, in the order they appear:
 
 - the body of every fenced code block in the message text, with the fences and language tag stripped
 - the `command` argument of every `bash` tool call
 
-One match goes straight to the clipboard. If more than one reply has copyable blocks, the first picker chooses the reply and shows its age (`Reply 1` is the latest; `Reply 10` is the oldest searched). If the selected reply has several blocks, a second picker chooses the block. Each choice shows a truncated first line, and the selected content is copied without its markdown fences.
+One match goes straight to the clipboard. If several replies have blocks, a picker chooses the reply (`Reply 1` is the latest). If that reply has several blocks, a second picker chooses the block. Each choice shows the first line, truncated to 80 characters.
 
-If none of the ten replies has a block, you get a warning and the clipboard is left alone.
+If none of the replies has a block, you get a warning and the clipboard is left alone.
 
 ## License
 

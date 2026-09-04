@@ -1,7 +1,7 @@
 {
   "name": "@joelazar/pi-copy-block",
   "version": "1.0.1",
-  "description": "Copy a code block or shell command out of the last pi reply to the clipboard",
+  "description": "Copy a code block or shell command out of recent pi replies to the clipboard",
   "type": "module",
   "keywords": [
     "pi-package",
@@ -23,6 +23,9 @@
     "url": "https://github.com/joelazar/pi-copy-block/issues"
   },
   "homepage": "https://github.com/joelazar/pi-copy-block#readme",
+  "engines": {
+    "node": ">=22.18"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -38,7 +41,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "node --experimental-strip-types --test test/index.test.ts",
+    "test": "node --test",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm test && npm pack --dry-run"
   },
